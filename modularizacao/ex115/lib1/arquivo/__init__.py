@@ -34,7 +34,7 @@ def lerArquivo(nome): #Ler o arquivo e exibir as linhas
     finally:
         a.close()
 
-def cadastrar(arq, nome = 'desconhecido', idade = 0):
+def cadastrar(arq, nome = 'desconhecido', idade = 0): #Função para cadastrar novos nomes à lista
     try:
         a = open(arq, 'at')
     except:
@@ -48,3 +48,35 @@ def cadastrar(arq, nome = 'desconhecido', idade = 0):
             print(f"Novo registro de {nome} adicionado com sucesso!")
         finally:
             a.close()
+
+
+def apagarcadastro(arq, nome): #Função para apagar um determinado nome da lista
+    a = nome
+    linha_a_apagar = None
+
+    try:
+        #Abrindo o arquivo para leitura
+        with open(arq, "r") as file:
+            linhas = file.readlines()
+    except Exception as exc:
+        print(f"Houve um erro na abertura do arquivo: {exc}")
+        return #termina a função caso ocorra o erro
+    
+    # Percorrendo o arquivo para tentar localizar a linha com o nome a ser apagado
+    for numerolinha, linha in enumerate(linhas):
+        if a in linha:
+            linha_a_apagar = numerolinha
+
+    # Verificando se o nome a ser apagado foi encontrado
+    if linha_a_apagar is not None:
+        try:
+            # Reescrevendo o arquivo sem a linha que foi apagada
+            with open(arq, "w") as file:
+                for numero, linha in enumerate(linhas):
+                    if numero != linha_a_apagar:
+                        file.write(linha)
+            print(f"O nome '{nome}' foi removido com sucesso!")
+        except Exception as exc:
+            print(f"Houve um erro ao tentar reescrever o arquivo: {exc}")
+    else:
+        print(f"O nome '{nome}' não foi encontrado na lista.")
